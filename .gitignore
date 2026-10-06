@@ -1,0 +1,24 @@
+# Eclipse / IDE
+.metadata/
+.settings/
+.classpath
+.project
+.idea/
+*.iml
+.vscode/
+
+# Backend (Maven)
+backend/target/
+
+# Frontend (Angular)
+frontend/reservas-app/node_modules/
+frontend/reservas-app/dist/
+frontend/reservas-app/.angular/
+
+# SO / logs
+.DS_Store
+Thumbs.db
+*.log
+
+# Variables de entorno
+.env

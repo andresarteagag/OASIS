@@ -1,0 +1,23 @@
+<header class="topbar" *ngIf="!rutaPublica && (auth.sesion$ | async) as sesion">
+  <div class="topbar-in">
+    <a routerLink="/" class="marca">
+      <img src="assets/images/logo-udem.png" alt="" width="32" height="32"> Reservas UdeM
+    </a>
+    <nav aria-label="Principal">
+      <ng-container *ngIf="sesion.usuario.rol === 'ADMIN'; else navUsuario">
+        <a routerLink="/admin-reservas" routerLinkActive="activo">Reservas</a>
+        <a routerLink="/admin-escenarios" routerLinkActive="activo">Escenarios</a>
+        <a routerLink="/admin-usuarios" routerLinkActive="activo">Usuarios</a>
+      </ng-container>
+      <ng-template #navUsuario>
+        <a routerLink="/reservas" routerLinkActive="activo">Mi reserva</a>
+        <a routerLink="/perfil" routerLinkActive="activo">Perfil</a>
+      </ng-template>
+    </nav>
+    <div class="sesion">
+      <span>{{ sesion.usuario.nombre }}</span>
+      <button type="button" class="btn btn-secondary btn-sm" (click)="salir()">Salir</button>
+    </div>
+  </div>
+</header>
+<router-outlet></router-outlet>

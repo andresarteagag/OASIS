@@ -1,0 +1,90 @@
+<main class="shell" [attr.aria-busy]="cargando">
+  <header class="page-head">
+    <div>
+      <h1>{{ activa ? 'Tu reserva' : 'Reservar' }}</h1>
+      <p class="lead">{{ activa
+        ? 'Si no puedes asistir, cámbiala de fecha u hora, o cancélala para liberar el escenario.'
+        : 'Elige un escenario disponible, una fecha y una hora. Puedes tener una reserva activa a la vez.' }}</p>
+    </div>
+  </header>
+
+  <!-- Reserva activa -->
+  <section class="ticket" *ngIf="activa as r">
+    <ng-container *ngIf="!editando; else formEditar">
+      <div class="ticket-hora">{{ r.horaInicio | slice:0:5 }}</div>
+      <div class="ticket-datos">
+        <h2>{{ r.nombreEscenario }}</h2>
+        <p>{{ fechaLarga(r.fecha) }}</p>
+      </div>
+      <div class="acciones">
+        <button type="button" class="btn btn-secondary" (click)="editar(r)">Cambiar fecha u hora</button>
+        <button type="button" class="btn btn-danger" (click)="cancelar(r)">Cancelar</button>
+      </div>
+    </ng-container>
+
+    <ng-template #formEditar>
+      <form class="ticket-form" (ngSubmit)="guardar(r)">
+        <div class="form-group">
+          <label for="e-esc">Escenario</label>
+          <select id="e-esc" [(ngModel)]="edicion.escenario" name="escenario">
+            <option *ngFor="let e of disponibles" [value]="e.nombre">{{ e.nombre }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="e-fecha">Fecha</label>
+          <input id="e-fecha" type="date" [(ngModel)]="edicion.fecha" name="fecha" [min]="hoy" required>
+        </div>
+        <div class="form-group">
+          <label for="e-hora">Hora</label>
+          <select id="e-hora" [(ngModel)]="edicion.hora" name="hora" required>
+            <option *ngFor="let h of horas" [value]="h" [disabled]="esPasada(edicion.fecha, h)">{{ h }}</option>
+          </select>
+        </div>
+        <div class="acciones">
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+          <button type="button" class="btn btn-secondary" (click)="editando = false">Descartar</button>
+        </div>
+      </form>
+    </ng-template>
+  </section>
+
+  <!-- Nueva reserva (solo si no hay una activa) -->
+  <section class="seccion" *ngIf="!activa && !cargando">
+    <p class="vacio" *ngIf="disponibles.length === 0">No hay escenarios disponibles en este momento.</p>
+    <div class="escenario-item" *ngFor="let e of escenarios">
+      <div class="escenario-header" tabindex="0" role="button" [attr.aria-expanded]="abierto === e.nombre"
+           (click)="e.disponible && toggle(e)" (keydown.enter)="e.disponible && toggle(e)">
+        <h3>{{ e.nombre }}</h3>
+        <span class="estado" [class.disponible]="e.disponible">{{ e.disponible ? 'Disponible' : 'No disponible' }}</span>
+        <span class="flecha" aria-hidden="true">{{ abierto === e.nombre ? '−' : '+' }}</span>
+      </div>
+      <div class="escenario-detalle" *ngIf="abierto === e.nombre">
+        <div class="form-group">
+          <label for="n-fecha">Fecha</label>
+          <input id="n-fecha" type="date" [(ngModel)]="nueva.fecha" name="fecha" [min]="hoy">
+        </div>
+        <div class="form-group">
+          <label for="n-hora">Hora</label>
+          <select id="n-hora" [(ngModel)]="nueva.hora" name="hora">
+            <option value="" disabled>Selecciona una hora</option>
+            <option *ngFor="let h of horas" [value]="h" [disabled]="esPasada(nueva.fecha, h)">{{ h }}</option>
+          </select>
+        </div>
+        <button type="button" class="btn-reservar" (click)="reservar(e.nombre)" [disabled]="!nueva.fecha || !nueva.hora">Reservar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Historial -->
+  <section class="seccion" *ngIf="historial.length">
+    <h3>Historial</h3>
+    <div class="reserva-item" *ngFor="let r of historial">
+      <div class="reserva-datos">
+        <span class="reserva-fecha">{{ r.fecha }}</span>
+        <span>{{ r.horaInicio | slice:0:5 }}</span>
+        <span class="reserva-escenario">{{ r.nombreEscenario }}</span>
+      </div>
+      <span class="chip chip-mute">Finalizada</span>
+    </div>
+  </section>
+</main>

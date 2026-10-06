@@ -1,0 +1,64 @@
+<main class="shell" [attr.aria-busy]="cargando">
+  <header class="page-head">
+    <div>
+      <h1>Reservas</h1>
+      <p class="lead">{{ reservas.length }} en total. Crea, reprograma o elimina reservas de cualquier usuario.</p>
+    </div>
+    <button type="button" class="btn btn-primary" (click)="nueva()" *ngIf="!mostrarForm">Nueva reserva</button>
+  </header>
+
+  <form class="panel grid-2" *ngIf="mostrarForm" (ngSubmit)="guardar()">
+    <h2 class="full">{{ editandoId ? 'Reprogramar reserva' : 'Nueva reserva' }}</h2>
+    <div class="form-group full">
+      <label for="r-u">Usuario</label>
+      <select id="r-u" [(ngModel)]="form.correoUsuario" name="usuario" [disabled]="!!editandoId" required>
+        <option value="" disabled>Selecciona un usuario</option>
+        <option *ngFor="let u of usuarios" [value]="u.correoInstitucional">{{ u.nombre }} {{ u.apellidos }} · {{ u.correoInstitucional }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="r-e">Escenario</label>
+      <select id="r-e" [(ngModel)]="form.nombreEscenario" name="escenario" required>
+        <option value="" disabled>Selecciona un escenario</option>
+        <option *ngFor="let e of escenarios" [value]="e.nombre" [disabled]="!e.disponible">{{ e.nombre }}{{ e.disponible ? '' : ' (no disponible)' }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="r-h">Hora</label>
+      <select id="r-h" [(ngModel)]="form.horaInicio" name="hora" required>
+        <option value="" disabled>Selecciona una hora</option>
+        <option *ngFor="let h of horas" [value]="h">{{ h }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="r-f">Fecha</label>
+      <input id="r-f" type="date" [(ngModel)]="form.fecha" name="fecha" [min]="hoy" required>
+    </div>
+    <div class="acciones full">
+      <button type="submit" class="btn btn-primary">{{ editandoId ? 'Guardar cambios' : 'Crear reserva' }}</button>
+      <button type="button" class="btn btn-secondary" (click)="descartar()">Cancelar</button>
+    </div>
+  </form>
+
+  <input type="search" class="buscar" [(ngModel)]="filtro" placeholder="Buscar por usuario o escenario" aria-label="Buscar reservas">
+
+  <div class="tabla-wrap">
+    <table>
+      <thead><tr><th>Fecha</th><th>Hora</th><th>Escenario</th><th>Usuario</th><th>Estado</th><th><span class="sr-only">Acciones</span></th></tr></thead>
+      <tbody>
+        <tr *ngFor="let r of visibles">
+          <td>{{ r.fecha }}</td>
+          <td>{{ r.horaInicio | slice:0:5 }}</td>
+          <td>{{ r.nombreEscenario }}</td>
+          <td>{{ r.correoUsuario }}</td>
+          <td><span class="chip" [class.chip-mute]="!activa(r)">{{ activa(r) ? 'Próxima' : 'Finalizada' }}</span></td>
+          <td class="acciones-fila">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="editar(r)">Reprogramar</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="eliminar(r)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="vacio" *ngIf="!cargando && visibles.length === 0">No hay reservas{{ filtro ? ' que coincidan con la búsqueda' : ' todavía' }}.</p>
+  </div>
+</main>

@@ -1,0 +1,16 @@
+.split { display: grid; grid-template-columns: 1.1fr 1fr; min-height: 100vh; }
+.pitch { background: var(--green); color: #fff; padding: 2.5rem; display: flex; flex-direction: column; gap: 2rem; min-height: 0; }
+.pitch svg { flex: 1; min-height: 0; width: 100%; stroke: rgba(255,255,255,.9); stroke-width: 2; fill: none; }
+.pitch svg .balon { fill: var(--yellow); stroke: none; }
+.pitch h1 { max-width: 14ch; }
+.pitch p { margin: 1rem 0 0; max-width: 40ch; font-size: 1.0625rem; opacity: .92; }
+.access { display: flex; flex-direction: column; justify-content: center; padding: 3rem clamp(1.5rem, 6vw, 5rem); max-width: 560px; width: 100%; margin: 0 auto; }
+.access .logo { width: 64px; height: 64px; object-fit: contain; margin-bottom: 2rem; }
+.access h2 { margin-bottom: 2rem; }
+.links { margin-top: 1.75rem; }
+.link { font-weight: 500; }
+@media (max-width: 860px) {
+  .split { grid-template-columns: 1fr; }
+  .pitch { padding: 1.5rem; }
+  .pitch svg { flex: none; height: 200px; }
+}

@@ -1,0 +1,32 @@
+<main class="shell narrow">
+  <a routerLink="/inicio" class="back">← Volver a ingresar</a>
+  <h1>Crea tu cuenta</h1>
+  <p class="lead">Usa tu correo institucional para reservar escenarios deportivos.</p>
+
+  <form (ngSubmit)="registrar()" class="grid-2" style="margin-top:3rem">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" [(ngModel)]="usuario.nombre" name="nombre" required>
+    </div>
+    <div class="form-group">
+      <label for="apellidos">Apellidos</label>
+      <input id="apellidos" type="text" [(ngModel)]="usuario.apellidos" name="apellidos" required>
+    </div>
+    <div class="form-group full">
+      <label for="cedula">Cédula</label>
+      <input id="cedula" type="text" [(ngModel)]="usuario.cedula" name="cedula" required>
+    </div>
+    <div class="form-group full">
+      <label for="correo">Correo institucional</label>
+      <input id="correo" type="email" [(ngModel)]="usuario.correoInstitucional" name="correoInstitucional"
+             required placeholder="ejemplo@soyudemedellin.edu.co">
+    </div>
+    <div class="form-group full">
+      <label for="clave">Contraseña (mínimo 6 caracteres)</label>
+      <input id="clave" type="password" [(ngModel)]="usuario.contrasena" name="contrasena" required minlength="6">
+    </div>
+    <div class="full">
+      <button type="submit" class="register-btn">Crear cuenta</button>
+    </div>
+  </form>
+</main>

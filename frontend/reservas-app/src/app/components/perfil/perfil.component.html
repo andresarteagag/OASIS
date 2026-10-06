@@ -1,0 +1,19 @@
+<main class="shell narrow" *ngIf="auth.usuario as u">
+  <header class="page-head">
+    <div>
+      <h1>Hola, {{ u.nombre }}</h1>
+      <p class="lead">Estos son los datos de tu cuenta.</p>
+    </div>
+    <span class="chip">{{ u.rol === 'ADMIN' ? 'Administrador' : 'Usuario' }}</span>
+  </header>
+
+  <dl class="datos">
+    <div><dt>Nombre</dt><dd>{{ u.nombre }} {{ u.apellidos }}</dd></div>
+    <div><dt>Cédula</dt><dd>{{ u.cedula }}</dd></div>
+    <div><dt>Correo</dt><dd>{{ u.correoInstitucional }}</dd></div>
+  </dl>
+
+  <a class="btn btn-primary" [routerLink]="u.rol === 'ADMIN' ? '/admin-reservas' : '/reservas'">
+    {{ u.rol === 'ADMIN' ? 'Ir al panel' : 'Ver mi reserva' }}
+  </a>
+</main>
