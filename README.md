@@ -2,7 +2,7 @@
 
 Plataforma web para reservar los escenarios deportivos de la Universidad de Medellín. Nació como proyecto académico para reemplazar el proceso presencial (hay que ir a reservar con un día de anticipación) por un sistema en línea, rápido y transparente.
 
-> Proyecto desarrollado para el cliente *Bienestar Universitario – Universidad de Medellín*. La documentación de análisis está en [`docs/HITO-2-entrega-final.docx`](docs/HITO-2-entrega-final.docx).
+> Proyecto desarrollado para el cliente *Bienestar Universitario – Universidad de Medellín*. 
 
 ## ¿Qué hace?
 
@@ -126,8 +126,3 @@ Errores de negocio: `{ "message": "..." }` con 400, 401, 403, 404 o 409.
 - Las contraseñas se guardan en texto plano; falta hashing (BCrypt) y expiración de tokens (o JWT con Spring Security).
 - Sin pruebas automatizadas todavía.
 
-## Equipo
-
-Juan Pablo Ramírez Franco · Daniel Alzate Arias · Matias Herrera Vanegas · Andrés Felipe Arteaga · Aaron David Giraldo Henao
-
-Universidad de Medellín.
